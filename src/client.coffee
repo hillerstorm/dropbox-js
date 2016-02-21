@@ -656,6 +656,8 @@ class Dropbox.Client
         params.hash = options.cacheHash
       if options.httpCache
         httpCache = true
+      if options.includeMediaInfo
+        params.include_media_info = true
     params.include_deleted ||= 'false'
     params.list ||= 'false'
     # TODO: locale support would edit the params here
@@ -727,6 +729,8 @@ class Dropbox.Client
         statOptions.removed = options.removed or options.deleted
       if options.httpCache
         statOptions.httpCache = options.httpCache
+      if options.includeMediaInfo
+        statOptions.includeMediaInfo = options.includeMediaInfo
     @stat path, statOptions, (error, stat, entry_stats) ->
       if entry_stats
         entries = (entry_stat.name for entry_stat in entry_stats)

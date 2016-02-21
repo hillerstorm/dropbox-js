@@ -17,6 +17,9 @@ class Dropbox.File.Stat
   #   Dropbox or to the application's folder
   path: null
 
+  # @property {Object} photo info
+  photoInfo: null
+
   # @property {String} the name of this file or folder
   name: null
 
@@ -127,6 +130,19 @@ class Dropbox.File.Stat
       @clientModifiedAt = Dropbox.Util.parseDate metadata.client_mtime
     else
       @clientModifiedAt = null
+    if metadata.photo_info
+      @photoInfo = {}
+      if metadata.photo_info is 'pending' or metadata.photo_info.pending
+        @photoInfo.pending = true
+      else
+        if metadata.photo_info.lat_long
+          @photoInfo.latLong = metadata.photo_info.lat_long
+        if metadata.photo_info.time_taken
+          @photoInfo.timeTaken = metadata.photo_info.time_taken
+        if metadata.photo_info.image_dimensions
+          @photoInfo.imageDimensions = metadata.photo_info.image_dimensions
+    else
+      @photoInfo = null
 
     switch metadata.root
       when 'dropbox'
